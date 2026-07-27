@@ -1,3 +1,4 @@
+from flask import Flask, jsonify, request, send_from_directory
 import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -34,6 +35,14 @@ def init_db():
 
 # تجهيز الجدول أول ما السيرفر يقوم
 init_db()
+
+@app.route('/')
+def home():
+    return send_from_directory('.', 'index.html')
+
+@app.route('/<path:path>')
+def send_static(path):
+    return send_from_directory('.', path)
 
 @app.route('/api/tasks', methods=['GET'])
 def get_tasks():
